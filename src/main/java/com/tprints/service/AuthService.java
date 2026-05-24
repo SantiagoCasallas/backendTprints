@@ -33,6 +33,10 @@ public class AuthService {
             throw new ApiException("El correo ya está registrado", HttpStatus.CONFLICT);
         }
 
+        if (usuarioRepository.existsByNombreUsuario(request.getNombreUsuario())) {
+            throw new ApiException("El nombre de usuario ya está registrado", HttpStatus.CONFLICT);
+        }
+
         String rolSolicitado = request.getRol() == null
                 ? "CLIENTE"
                 : request.getRol().toUpperCase();
@@ -50,7 +54,7 @@ public class AuthService {
 
         Role role = roleRepository.findByNombre(rolSolicitado)
                 .orElseThrow(() -> new ApiException(
-                        "Rol no encontrado en base de datos: " +"rolSolicitado",
+                        "Rol no encontrado en base de datos: " + "rol",
                         HttpStatus.INTERNAL_SERVER_ERROR
                 ));
 
@@ -58,6 +62,7 @@ public class AuthService {
         usuario.setNombres(request.getNombres());
         usuario.setApellidos(request.getApellidos());
         usuario.setCorreo(request.getCorreo());
+        usuario.setNombreUsuario(request.getNombreUsuario());
         usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setTelefono(request.getTelefono());
         usuario.setFotoPerfilUrl(request.getFotoPerfilUrl());
@@ -71,14 +76,17 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+        String identificador = request.getIdentificador();
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getCorreo(),
+                        identificador,
                         request.getPassword()
                 )
         );
 
-        Usuario usuario = usuarioRepository.findByCorreo(request.getCorreo())
+        Usuario usuario = usuarioRepository
+                .findByCorreoOrNombreUsuario(identificador, identificador)
                 .orElseThrow(() -> new ApiException("Usuario no encontrado", HttpStatus.NOT_FOUND));
 
         String token = jwtService.generateToken(usuario);
@@ -98,6 +106,7 @@ public class AuthService {
                 usuario.getNombres(),
                 usuario.getApellidos(),
                 usuario.getCorreo(),
+                usuario.getNombreUsuario(),
                 roles
         );
     }

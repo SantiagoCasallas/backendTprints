@@ -1,15 +1,13 @@
 package com.tprints.dto.auth;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class LoginRequest {
 
-    @Email
     @NotBlank
-    private String correo;
+    private String identificador;
 
     @NotBlank
     private String password;

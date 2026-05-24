@@ -17,14 +17,14 @@ public class RegisterRequest {
     private String correo;
 
     @NotBlank
+    private String nombreUsuario;
+
+    @NotBlank
     private String password;
 
     private String telefono;
 
     private String fotoPerfilUrl;
 
-    // Valores permitidos para registro público:
-    // CLIENTE o DISENADOR.
-    // ADMINISTRADOR no se permite desde registro público.
     private String rol;
 }
