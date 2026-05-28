@@ -32,13 +32,12 @@ public class CorsConfig {
                 "OPTIONS"
         ));
 
-        config.setAllowedHeaders(List.of(
-                "Authorization",
-                "Content-Type",
-                "Accept",
-                "Origin",
-                "ngrok-skip-browser-warning"
-        ));
+config.setAllowedHeaders(List.of(
+        "Authorization",
+        "Content-Type",
+        "Accept",
+        "Origin"
+));
 
         config.setExposedHeaders(List.of("Authorization"));
         config.setAllowCredentials(true);
