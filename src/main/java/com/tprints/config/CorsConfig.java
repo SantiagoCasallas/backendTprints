@@ -11,42 +11,44 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-        @Bean
-        public CorsConfigurationSource corsConfigurationSource() {
-                CorsConfiguration config = new CorsConfiguration();
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
 
-                config.setAllowedOriginPatterns(List.of(
-                                "http://localhost:3000",
-                                "http://localhost:5173",
-                                "https://pro-phi-eosin.vercel.app",
-                                "https://*.vercel.app",
-                                "https://santiagocasallas.qzz.io"));
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "https://pro-phi-eosin.vercel.app",
+                "https://*.vercel.app",
+                "https://santiagocasallas.qzz.io"
+        ));
 
-                config.setAllowedMethods(List.of(
-                                "GET",
-                                "POST",
-                                "PUT",
-                                "PATCH",
-                                "DELETE",
-                                "OPTIONS"));
+        config.setAllowedMethods(List.of(
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
+        ));
 
-                config.setAllowedHeaders(List.of(
-                                "Authorization",
-                                "Content-Type",
-                                "Accept",
-                                "Origin",
-                                "ngrok-skip-browser-warning"));
+        config.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "Accept",
+                "Origin",
+                "ngrok-skip-browser-warning"
+        ));
 
-                config.setExposedHeaders(List.of(
-                                "Authorization"));
+        config.setExposedHeaders(List.of("Authorization"));
+        config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
 
-                config.setAllowCredentials(true);
-                config.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
 
-                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
 
-                source.registerCorsConfiguration("/**", config);
-
-                return source;
-        }
+        return source;
+    }
 }
