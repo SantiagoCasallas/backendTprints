@@ -93,21 +93,21 @@ public class AuthService {
 
         return buildAuthResponse(usuario, token);
     }
+private AuthResponse buildAuthResponse(Usuario usuario, String token) {
+    List<String> roles = usuario.getRoles()
+            .stream()
+            .map(Role::getNombre)
+            .toList();
 
-    private AuthResponse buildAuthResponse(Usuario usuario, String token) {
-        List<String> roles = usuario.getRoles()
-                .stream()
-                .map(Role::getNombre)
-                .toList();
-
-        return new AuthResponse(
-                token,
-                usuario.getIdUsuario(),
-                usuario.getNombres(),
-                usuario.getApellidos(),
-                usuario.getCorreo(),
-                usuario.getNombreUsuario(),
-                roles
-        );
-    }
+    return new AuthResponse(
+            token,
+            usuario.getIdUsuario(),
+            usuario.getNombres(),
+            usuario.getApellidos(),
+            usuario.getCorreo(),
+            usuario.getNombreUsuario(),
+            usuario.getFotoPerfilUrl(),
+            roles
+    );
+}
 }
